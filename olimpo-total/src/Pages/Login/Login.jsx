@@ -4,18 +4,16 @@ import { FaUser, FaLock } from 'react-icons/fa';
 import { FiMail } from 'react-icons/fi';
 import { AiOutlineIdcard } from 'react-icons/ai';
 import OlimpoIcon from "../../assets/OlimpoIcon.png";
-import './Cadastro.css';
+import './Login.css';
 
-const Cadastro = () => {
-  const [nome, setNome] = useState('');
+const Login = () => {
   const [email, setEmail] = useState('');
-  const [cpf, setCpf] = useState('');
   const [senha, setSenha] = useState('');
   const navigate = useNavigate();  // Inicializando o useNavigate
 
   const handleSubmitCadastro = (event) => {
     event.preventDefault();
-    console.log("Cadastro:", nome, email, cpf, senha);
+    console.log("Login:",email, senha);
     navigate('/Login');  // Redirecionando para a página Home
   };
 
@@ -25,26 +23,16 @@ const Cadastro = () => {
         {/* Seção de Login */}
         <div className="login-container">
           <img src={OlimpoIcon} alt="OLIMPO" className="olimpo-icon" />
-          <p>Bem-vindo(a)! Já tem conta? Acesse sua conta agora mesmo.</p>
+          <p>Bem-vindo(a)! Não tem uma conta? Crie sua conta agora mesmo.</p>
           <form>
             <button className="login-button" type="submit">ENTRAR</button>
           </form>
         </div>
 
-        {/* Seção de Cadastro */}
-        <div className="register-container">
-          <h1 className="h1conta">Crie sua conta</h1>
+        {/* Seção de Login */}
+        <div className="login-container">
+          <h1 className="h1conta">Login</h1>
           <form onSubmit={handleSubmitCadastro}>
-            <div className="input-field">
-              <input
-                type="text"
-                placeholder="Nome"
-                required
-                onChange={(e) => setNome(e.target.value)}
-              />
-              <FaUser className="icon" />
-            </div>
-
             <div className="input-field">
               <input
                 type="email"
@@ -57,17 +45,6 @@ const Cadastro = () => {
 
             <div className="input-field">
               <input
-                type="text"
-                placeholder="CPF"
-                maxLength="14"
-                required
-                onChange={(e) => setCpf(e.target.value)}
-              />
-              <AiOutlineIdcard className="icon" />
-            </div>
-
-            <div className="input-field">
-              <input
                 type="password"
                 placeholder="Senha"
                 required
@@ -75,8 +52,7 @@ const Cadastro = () => {
               />
               <FaLock className="icon" />
             </div>
-
-            <button className="register-button" type="submit">Cadastrar</button>
+            <button className="login-button" type="submit">Login</button>
           </form>
         </div>
       </div>
@@ -84,4 +60,4 @@ const Cadastro = () => {
   );
 };
 
-export default Cadastro;
+export default Login;
