@@ -1,0 +1,112 @@
+.container {
+    display: flex; /* Organiza os filhos da div lado a lado */
+    justify-content: center; /* Coloca os filhos no centro horizontalmente */
+    align-items: center; /* Coloca os filhos no centro verticalmente */
+    background: #f4f4f4; /* Cor de fundo cinza claro */
+    border-radius: 20px;
+}
+
+.form-container {
+    display: flex; /* Organiza o conteúdo dos formulários lado a lado */
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;  /* Organiza os elementos em coluna */
+    justify-content: flex-start;  /* Ajusta os elementos no topo */
+    align-items: center;  /* Centraliza os elementos horizontalmente */
+    background: rgb(0, 0, 0); /* Cor de fundo preta */
+    padding: 20px; /* Espaço de 20px dentro da área de login */
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave ao redor */
+    width: 380px; /* Largura da área de login ajustada */
+    height: 600px; /* Definindo uma altura específica */
+    color: white; /* Cor do texto branca */
+}
+
+.register-container {
+    background: rgb(255, 255, 255); /* Cor de fundo branca */
+    padding: 20px; /* Espaço de 20px dentro da área de cadastro */
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave ao redor */
+    width: 600px; /* Largura da área de cadastro ajustada */
+}
+
+h1 {
+    font-size: 2rem; /* Tamanho de fonte grande para o título */
+    margin-bottom: 10px; /* Espaço de 10px abaixo do título */
+    color: white; /* Cor branca para o título */
+}
+
+p {
+    font-size: 1rem; /* Tamanho de fonte normal para o parágrafo */
+    margin-bottom: 20px; /* Espaço de 20px abaixo do parágrafo */
+    color: white; /* Cor branca para o parágrafo */
+    text-align: center; /* Centraliza o parágrafo */
+}
+
+.input-field {
+    position: relative; /* Necessário para posicionar o ícone dentro do input */
+    margin-bottom: 15px; /* Espaço de 15px abaixo do campo de input */
+}
+
+input {
+    width: 100%; /* O campo de input ocupa toda a largura disponível */
+    padding: 10px; /* Espaço interno de 10px dentro do input */
+    padding-left: 40px; /* Espaço extra de 40px à esquerda para o ícone */
+    font-size: 16px; /* Tamanho de fonte de 16px para o texto */
+    border-radius: 10px; /* Borda arredondada no input */
+    border: 1px solid #ddd; /* Borda fina e cinza clara */
+    outline: none; /* Remove o contorno padrão ao focar no input */
+}
+
+.icon {
+    position: absolute; /* Posiciona o ícone de forma absoluta dentro do input */
+    left: 10px; /* O ícone fica 10px da borda esquerda */
+    top: 50%; /* O ícone fica no meio do campo de input, verticalmente */
+    transform: translateY(-50%); /* Ajuste para centralizar o ícone */
+}
+
+.register-button {
+    width: 100%; /* Largura do botão */
+    padding: 10px; /* Espaço de 10px dentro do botão */
+    background-color: rgb(194, 194, 194); /* Cor de fundo cinza claro */
+    border: none; /* Remove a borda padrão do botão */
+    border-radius: 10px; /* Borda arredondada no botão */
+    font-size: 16px; /* Tamanho de fonte de 16px no botão */
+    cursor: pointer; /* Altera o cursor para uma mãozinha ao passar por cima */
+    display: flex; /* Usando flexbox para garantir o alinhamento */
+    justify-content: center; /* Alinha o conteúdo do botão ao centro */
+    align-items: center; /* Garante que o texto dentro do botão esteja centralizado verticalmente */
+    font-weight: 800;
+}
+
+/* Classe específica para o botão "Entrar" */
+.login-button {
+    width: 250px    ; /* Largura do botão */
+    padding: 30px; /* Espaço de 10px dentro do botão */
+    background-color: rgb(0, 0, 0); /* Cor de fundo cinza claro */
+    border-radius: 10px; /* Borda arredondada no botão */
+    font-size: 16px; /* Tamanho de fonte de 16px no botão */
+    margin-top: 60px;
+    cursor: pointer;
+    border-color: white;
+    color: #ffffff
+}
+
+.login-container p {
+    color: white; /* Cor branca para o parágrafo quando dentro da área preta */
+    font-size: 1rem; /* Tamanho da fonte do parágrafo */
+    margin-top: 20px; /* Espaço abaixo do parágrafo */
+    text-align: center; /* Alinha o texto ao centro */
+}   
+
+.register-container h1 {
+    color: black; /* Título preto quando dentro da área branca */
+}
+
+.register-container p {
+    color: black; /* Título preto quando dentro da área branca */
+}
