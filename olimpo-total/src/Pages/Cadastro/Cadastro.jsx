@@ -1,61 +1,63 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Certifique-se de importar o useNavigate
+import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { FiMail } from 'react-icons/fi';
 import { AiOutlineIdcard } from 'react-icons/ai';
 import OlimpoIcon from "../../assets/OlimpoIcon.png";
-import './Cadastro.css';
+import styles from './Cadastro.module.css'; // Usando CSS Modules
+
+
+
+
 
 const Cadastro = () => {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [cpf, setCpf] = useState('');
   const [senha, setSenha] = useState('');
-  const navigate = useNavigate();  // Inicializando o useNavigate
+  const navigate = useNavigate();
 
   const handleSubmitCadastro = (event) => {
     event.preventDefault();
     console.log("Cadastro:", nome, email, cpf, senha);
-    navigate('/Login');  // Redirecionando para a página Home
+    navigate('/Login');
   };
 
   return (
-    <div className="container">
-      <div className="form-container">
-        {/* Seção de Login */}
-        <div className="login-container">
-          <img src={OlimpoIcon} alt="OLIMPO" className="olimpo-icon" />
-          <p>Bem-vindo(a)! Já tem conta? Acesse sua conta agora mesmo.</p>
+    <div className={styles.container}>
+      <div className={styles.formContainer}>
+        <div className={styles.loginContainer}>
+          <img src={OlimpoIcon} alt="OLIMPO" />
+          <p>Bem-vindo(a)! Não tem conta? Crie sua conta agora mesmo.</p>
           <form>
-            <button className="login-button" type="submit">ENTRAR</button>
+            <button className={styles.loginButton} type="submit">Entrar</button>
           </form>
         </div>
 
-        {/* Seção de Cadastro */}
-        <div className="register-container">
-          <h1 className="h1conta">Crie sua conta</h1>
+        <div className={styles.registerContainer}>
+          <h1 className={styles.h1}>Crie sua conta</h1>
           <form onSubmit={handleSubmitCadastro}>
-            <div className="input-field">
+            <div className={styles.inputField}>
               <input
                 type="text"
                 placeholder="Nome"
                 required
                 onChange={(e) => setNome(e.target.value)}
               />
-              <FaUser className="icon" />
+              <FaUser className={styles.icon} />
             </div>
 
-            <div className="input-field">
+            <div className={styles.inputField}>
               <input
                 type="email"
                 placeholder="E-mail"
                 required
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <FiMail className="icon" />
+              <FiMail className={styles.icon} />
             </div>
 
-            <div className="input-field">
+            <div className={styles.inputField}>
               <input
                 type="text"
                 placeholder="CPF"
@@ -63,20 +65,20 @@ const Cadastro = () => {
                 required
                 onChange={(e) => setCpf(e.target.value)}
               />
-              <AiOutlineIdcard className="icon" />
+              <AiOutlineIdcard className={styles.icon} />
             </div>
 
-            <div className="input-field">
+            <div className={styles.inputField}>
               <input
                 type="password"
                 placeholder="Senha"
                 required
                 onChange={(e) => setSenha(e.target.value)}
               />
-              <FaLock className="icon" />
+              <FaLock className={styles.icon} />
             </div>
 
-            <button className="register-button" type="submit">Cadastrar</button>
+            <button className={styles.registerButton} type="submit">Cadastrar</button>
           </form>
         </div>
       </div>
