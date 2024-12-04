@@ -1,325 +1,58 @@
-const mysql = require('mysql2');
-
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'academia',
-});
-
-connection.connect(err => {
-  if (err) {
-    console.error('Erro ao conectar ao banco de dados:', err);
-    return;
-  }
-  console.log('Conectado ao banco de dados');
-});
-
-module.exports = connection;
-
-
-
-
-
-
+// Importar o Express
 const express = require('express');
-const db = require('./db');
-const cors = require('cors');
 const app = express();
-const port = 3000;
 
+// Importar o CORS (para permitir requisições de origens diferentes)
+const cors = require('cors');
 
-app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
-});
+// Importar a conexão com o banco de dados
+const connection = require('./db');  // Importando a conexão correta
 
-  app.use(express.json());
+// Configurar o CORS para permitir requisições do frontend na porta 5173
+app.use(cors({
+  origin: 'http://localhost:5173'  // Permite requisições apenas do frontend que está na porta 5173
+}));
 
-  app.use(cors({
-    origin: '*'
-  }));
+// Importar o corpo da requisição (necessário para poder acessar `req.body`)
+app.use(express.json());  // Adiciona o middleware para análise do corpo JSON da requisição
 
-  app.get('/', (req, res) => {
-    res.send('Hello, world!');
-  });
-
-
-/*atualizar usuario**/
-app.put('/atualizar/usuario/:id', (req, res) => {
-  const { nome, email, cpf, senha } = req.body;  
-  const { id } = req.params;  
-
-  
-  if (!nome || !email || !cpf || !senha) {
-      return res.status(400).json({ error: 'Todos os campos (nome, email, cpf, senha) são obrigatórios' });
-  }
-
-  
-  db.query(
-      `UPDATE usuario SET nome = ?, email = ?, cpf = ?, senha = ? WHERE id = ?`,  
-      [nome, email, cpf, senha, id],  
-      function (err, results) {
-          if (err) {
-              console.error('Erro na consulta:', err);
-              return res.status(500).json({ error: 'Erro ao atualizar o usuário' });
-          }
-
-        
-          if (results.affectedRows === 0) {
-              return res.status(404).json({ error: 'Usuário não encontrado' });
-          }
-
-          res.send(`Usuário ${id} atualizado com sucesso!\nNome: ${nome}\nEmail: ${email}\nCPF: ${cpf}\nSenha: ${senha}`);
-      }
-  );
-});
-
-
-
-/*deletar usuario**/
-  app.delete('/deletar/usuario/:id', (req, res) => {
-  const { id } = req.params; 
-  db.query(
-    `DELETE FROM usuario WHERE id = (?)`,
-    [id],
-    (err, results) => {
-      if (err) {
-        console.error('Erro para deletar', err);
-        return res.status(500).json({ error: 'Erro para deletar' });
-      }
-      return res.json(results);
-    }
-  );
-  });
-
-
-/*cadastrar usuario**/
-  app.post('/inserir/usuario', (req, res) => {
-    const { nome, email, cpf, senha } = req.body;
-
-
-    if (!nome || !email || !cpf || !senha) {
-      return res.status(400).send('Nome, email, CPF e senha são obrigatórios');
-    }
-
-    
-    db.query(
-      'INSERT INTO usuario (nome, email, cpf, senha) VALUES (?, ?, ?, ?)', 
-      [nome, email, cpf, senha], 
-      (err, results, fields) => {
-        if (err) {
-          console.error('Erro na inserção:', err);
-          return res.status(500).send('Erro ao inserir no banco de dados');
-        }
-        console.log('Usuário inserido:', results);
-
-        res.status(200).send(`Usuário inserido com sucesso!\n\nNome: ${nome}\nEmail: ${email}\nCPF: ${cpf}\nSenha: ${senha}`);
-      }
-    );
-  });
-
-  app.get('/puxar/usuario/:id', (req, res) => {
-    const {id}=req.params;
-    db.query(
-        `SELECT * FROM usuario WHERE id = ?`,
-        [id],
-        function(err,results,fields){
-            if(err){
-                console.error('erro para puxar',err);
-                return res.status(500).json({error:'Erro para puxar'})
-            }
-            return res.json(results)
-        }
-    )
-});
-
-
-
-
-/*----------------FUNCIONARIO---------------------------------**/
-/*cadastrar funcionario**/
-
-app.post('/inserir/funcionario', (req, res) => {
+// Seu código de cadastro de usuário
+app.post('/inserir/usuario', (req, res) => {
   const { nome, email, cpf, senha } = req.body;
-
 
   if (!nome || !email || !cpf || !senha) {
     return res.status(400).send('Nome, email, CPF e senha são obrigatórios');
   }
 
-  
-  db.query(
-    'INSERT INTO funcionario (nome, email, cpf, senha) VALUES (?, ?, ?, ?)', 
-    [nome, email, cpf, senha], 
-    (err, results, fields) => {
-      if (err) {
-        console.error('Erro na inserção:', err);
-        return res.status(500).send('Erro ao inserir no banco de dados');
-      }
-      console.log('funcionario inserido:', results);
-
-      res.status(200).send(`funcionario inserido com sucesso!\n\nNome: ${nome}\nEmail: ${email}\nCPF: ${cpf}\nSenha: ${senha}`);
+  // Verificar se o e-mail já existe
+  connection.query('SELECT * FROM usuario WHERE email = ? OR cpf = ?', [email, cpf], (err, results) => {
+    if (err) {
+      console.error('Erro ao verificar dados existentes:', err);
+      return res.status(500).send('Erro ao verificar dados');
     }
-  );
-});
 
-
-/*atualizar funcionario**/
-
-app.put('/atualizar/funcionario/:id', (req, res) => {
-  const { nome, email, cpf, senha } = req.body;  
-  const { id } = req.params;  
-
-  
-  if (!nome || !email || !cpf || !senha) {
-      return res.status(400).json({ error: 'Todos os campos (nome, email, cpf, senha) são obrigatórios' });
-  }
-
-  
-  db.query(
-      `UPDATE funcionario SET nome = ?, email = ?, cpf = ?, senha = ? WHERE id = ?`,  
-      [nome, email, cpf, senha, id],  
-      function (err, results) {
-          if (err) {
-              console.error('Erro na consulta:', err);
-              return res.status(500).json({ error: 'Erro ao atualizar o funcionario' });
-          }
-
-        
-          if (results.affectedRows === 0) {
-              return res.status(404).json({ error: 'Usuário não encontrado' });
-          }
-
-          res.send(`funcionario ${id} atualizado com sucesso!\nNome: ${nome}\nEmail: ${email}\nCPF: ${cpf}\nSenha: ${senha}`);
-      }
-  );
-});
-
-
-/*deletar funcionario**/
-
-app.delete('/deletar/funcionario/:id', (req, res) => {
-  const { id } = req.params; 
-  db.query(
-    `DELETE FROM funcionario WHERE id = (?)`,
-    [id],
-    (err, results) => {
-      if (err) {
-        console.error('Erro para deletar', err);
-        return res.status(500).json({ error: 'Erro para deletar' });
-      }
-      return res.json(results);
+    if (results.length > 0) {
+      return res.status(400).send('E-mail ou CPF já cadastrados');
     }
-  );
-  });
 
-  /*puxar funcionario**/
-
-  app.get('/puxar/funcionario/:id', (req, res) => {
-    const {id}=req.params;
-    db.query(
-        `SELECT * FROM funcionario WHERE id = ?`,
-        [id],
-        function(err,results,fields){
-            if(err){
-                console.error('erro para puxar',err);
-                return res.status(500).json({error:'Erro para puxar'})
-            }
-            return res.json(results)
+    // Inserir usuário caso não haja conflito
+    connection.query(
+      'INSERT INTO usuario (nome, email, cpf, senha) VALUES (?, ?, ?, ?)', 
+      [nome, email, cpf, senha], 
+      (err, results) => {
+        if (err) {
+          console.error('Erro na inserção:', err);
+          return res.status(500).send('Erro ao inserir no banco de dados');
         }
-    )
-});
-
-/*----------------------adm-------------------------------*/
-
-/*cadastrar adm**/
-
-app.post('/inserir/adm', (req, res) => {
-  const { nome, email, cpf } = req.body; 
-
-  if (!nome || !email || !cpf) {
-    return res.status(400).send('Nome, email e CPF são obrigatórios');
-  }
-
-  const senha = 'Xperito'; 
-
-  db.query(
-    'INSERT INTO adm (nome, email, cpf, senha) VALUES (?, ?, ?, ?)', 
-    [nome, email, cpf, senha], 
-    (err, results, fields) => {
-      if (err) {
-        console.error('Erro na inserção:', err);
-        return res.status(500).send('Erro ao inserir no banco de dados');
+        console.log('Usuário inserido:', results);
+        res.status(200).send('Usuário inserido com sucesso!');
       }
-      console.log('Adm inserido:', results);
-
-      res.status(200).send(`Adm inserido com sucesso!\n\nNome: ${nome}\nEmail: ${email}\nCPF: ${cpf}\nSenha: ${senha}`);
-    }
-  );
-});
-
-/*atualizar adm**/
-
-app.put('/atualizar/adm/:id', (req, res) => {
-  const { nome, email, cpf, senha } = req.body;  
-  const { id } = req.params;  
-
-  
-  if (!nome || !email || !cpf || !senha) {
-      return res.status(400).json({ error: 'Todos os campos (nome, email, cpf, senha) são obrigatórios' });
-  }
-
-  
-  db.query(
-      `UPDATE adm SET nome = ?, email = ?, cpf = ?, senha = ? WHERE id = ?`,  
-      [nome, email, cpf, senha, id],  
-      function (err, results) {
-          if (err) {
-              console.error('Erro na consulta:', err);
-              return res.status(500).json({ error: 'Erro ao atualizar o adm' });
-          }
-
-        
-          if (results.affectedRows === 0) {
-              return res.status(404).json({ error: 'adm não encontrado' });
-          }
-
-          res.send(`adm ${id} atualizado com sucesso!\nNome: ${nome}\nEmail: ${email}\nCPF: ${cpf}\nSenha: ${senha}`);
-      }
-  );
-});
-
-/*deletar adm**/
-
-app.delete('/deletar/adm/:id', (req, res) => {
-  const { id } = req.params; 
-  db.query(
-    `DELETE FROM adm WHERE id = (?)`,
-    [id],
-    (err, results) => {
-      if (err) {
-        console.error('Erro para deletar', err);
-        return res.status(500).json({ error: 'Erro para deletar' });
-      }
-      return res.json(results);
-    }
-  );
+    );
   });
+});
 
-
-  /*puxar funcionario**/
-
-  app.get('/puxar/adm/:id', (req, res) => {
-    const {id}=req.params;
-    db.query(
-        `SELECT * FROM adm WHERE id = ?`,
-        [id],
-        function(err,results,fields){
-            if(err){
-                console.error('erro para puxar',err);
-                return res.status(500).json({error:'Erro para puxar'})
-            }
-            return res.json(results)
-        }
-    )
+// Definir a porta e iniciar o servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });

@@ -1,5 +1,6 @@
 const mysql = require('mysql2');
 
+// Criar a conexão com o banco de dados MySQL
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -7,7 +8,8 @@ const connection = mysql.createConnection({
   database: 'academia',
 });
 
-connection.connect(err => {
+// Verificar se a conexão foi estabelecida corretamente
+connection.connect((err) => {
   if (err) {
     console.error('Erro ao conectar ao banco de dados:', err);
     return;
@@ -15,4 +17,4 @@ connection.connect(err => {
   console.log('Conectado ao banco de dados');
 });
 
-module.exports = connection;
+module.exports = connection;  // Exporta a conexão para ser usada em outros arquivos
