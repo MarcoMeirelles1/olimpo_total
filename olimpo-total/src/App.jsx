@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Importando do react-router-dom
-import Cadastro from './pages/Cadastro/Cadastro.jsx';
+import Cadastro from "./Pages/Cadastro/Cadastro.jsx";
 import Home from './Pages/Home/Home.jsx';
 import Login from "./Pages/Login/Login.jsx";
 

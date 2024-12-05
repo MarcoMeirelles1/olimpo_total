@@ -1,17 +1,15 @@
 // Importar as dependências
 const express = require('express');
 const cors = require('cors');
-const jwt = require('jsonwebtoken');  // Para gerar o token JWT
-const connection = require('./db');  // Sua conexão com o banco de dados
-
+const jwt = require('jsonwebtoken'); 
+const connection = require('./db');  
 const app = express();
 
 // Configuração do CORS para permitir requisições do frontend
 app.use(cors({
-  origin: 'http://localhost:5173'  // Permite requisições da porta 5173
+  origin: 'http://localhost:5173' 
 }));
 
-// Middleware para ler o corpo da requisição como JSON
 app.use(express.json());
 
 // Rota de Cadastro de Usuário
@@ -68,12 +66,12 @@ app.post('/login', (req, res) => {
       return res.status(401).send('Senha incorreta');
     }
 
-    // Gerar um token JWT
+  
     const token = jwt.sign({ userId: user.id }, 'seu_segredo_aqui', { expiresIn: '1h' });
 
     res.status(200).send({
       message: 'Login bem-sucedido',
-      token: token // Enviar o token no corpo da resposta
+      token: token 
     });
   });
 });

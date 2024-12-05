@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Importando Link
+import { Link as ScrollLink } from 'react-scroll'; // Importando Link do react-scroll
 import OlimpoIcon from "../../assets/OlimpoIcon.png"; // Caminho para a imagem importada
 import styles from './Home.module.css'; // Importação do CSS Module
 
@@ -12,10 +13,18 @@ const Home = () => {
           <img src={OlimpoIcon} alt="OLIMPO" className={styles.logoImage} />
         </div>
         <nav>
-          <a href="#financeiro" className={styles.navLink}>Financeiro</a>
-          <a href="#duvidas" className={styles.navLink}>Dúvidas</a>
-          <a href="#planos" className={styles.navLink}>Planos</a>
-          <a href="#produtos" className={styles.navLink}>Produtos</a>
+          <ScrollLink to="financeiro" smooth={true} duration={500} className={styles.navLink}>
+            Financeiro
+          </ScrollLink>
+          <ScrollLink to="duvidas" smooth={true} duration={500} className={styles.navLink}>
+            Dúvidas
+          </ScrollLink>
+          <ScrollLink to="planos" smooth={true} duration={500} className={styles.navLink}>
+            Planos
+          </ScrollLink>
+          <ScrollLink to="produtos" smooth={true} duration={500} className={styles.navLink}>
+            Produtos
+          </ScrollLink>
         </nav>
       </header>
 
@@ -33,7 +42,7 @@ const Home = () => {
       </section>
 
       {/* Motivação */}
-      <section className={styles.motivationSection}>
+      <section id="financeiro" className={styles.motivationSection}>
         <p>
           Foco, força, disciplina e resultados! A motivação está dentro de você e o ambiente para te inspirar é aqui!<br />
           O seu objetivo também é o nosso!

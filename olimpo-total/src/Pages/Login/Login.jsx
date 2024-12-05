@@ -43,6 +43,7 @@ const Login = () => {
           <button className={styles.loginButton} onClick={() => navigate('/Cadastro')}>
             Registrar
           </button>
+          <button className={styles.voltarButton2} onClick={() => navigate('/Home')}>Voltar</button>
         </div>
 
         <div className={styles.registerContainer}>

@@ -39,6 +39,7 @@ const Cadastro = () => {
           <button className={styles.loginButton} onClick={() => navigate('/Login')}>
             Entrar
           </button>
+          <button className={styles.voltarButton} onClick={() => navigate('/Voltar')}>Voltar</button>
         </div>
 
         <div className={styles.registerContainer}>
