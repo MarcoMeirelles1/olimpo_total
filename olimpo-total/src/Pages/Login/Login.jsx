@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaUser, FaLock } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom'; // Navegação após login
+import { FaLock } from 'react-icons/fa';
 import { FiMail } from 'react-icons/fi';
-import { AiOutlineIdcard } from 'react-icons/ai';
 import OlimpoIcon from "../../assets/OlimpoIcon.png";
+import axios from 'axios';  // Importando o axios
 import styles from './Login.module.css'; // Usando CSS Modules
 
 const Login = () => {
@@ -11,10 +11,26 @@ const Login = () => {
   const [senha, setSenha] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmitCadastro = (event) => {
+  // Função que é chamada ao submeter o formulário de login
+  const handleSubmitLogin = async (event) => {
     event.preventDefault();
-    console.log("Login:",email,senha);
-    navigate('/Home');
+
+    const userCredentials = { email, senha };
+
+    try {
+      const response = await axios.post('http://localhost:3001/login', userCredentials);
+
+      if (response.status === 200) {
+        // Armazenar o token JWT no localStorage
+        localStorage.setItem('token', response.data.token);
+
+        // Redirecionar para a página inicial após login bem-sucedido
+        navigate('/Home');
+      }
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      alert('Erro ao fazer login. Verifique suas credenciais e tente novamente.');
+    }
   };
 
   return (
@@ -23,15 +39,15 @@ const Login = () => {
         <div className={styles.loginContainer}>
           <img src={OlimpoIcon} alt="OLIMPO" />
           <p>Bem-vindo(a)! Não tem conta? Crie sua conta agora mesmo.</p>
-          <form>
-            <button className={styles.loginButton} type="submit">Registrar</button>
-          </form>
+          {/* Link para a página de cadastro */}
+          <button className={styles.loginButton} onClick={() => navigate('/Cadastro')}>
+            Registrar
+          </button>
         </div>
 
         <div className={styles.registerContainer}>
           <h1 className={styles.h1}>Faça seu login</h1>
-          <form onSubmit={handleSubmitCadastro}>
-
+          <form onSubmit={handleSubmitLogin}>
             <div className={styles.inputField}>
               <input
                 type="email"

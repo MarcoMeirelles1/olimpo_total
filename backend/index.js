@@ -1,22 +1,20 @@
-// Importar o Express
+// Importar as dependências
 const express = require('express');
+const cors = require('cors');
+const jwt = require('jsonwebtoken');  // Para gerar o token JWT
+const connection = require('./db');  // Sua conexão com o banco de dados
+
 const app = express();
 
-// Importar o CORS (para permitir requisições de origens diferentes)
-const cors = require('cors');
-
-// Importar a conexão com o banco de dados
-const connection = require('./db');  // Importando a conexão correta
-
-// Configurar o CORS para permitir requisições do frontend na porta 5173
+// Configuração do CORS para permitir requisições do frontend
 app.use(cors({
-  origin: 'http://localhost:5173'  // Permite requisições apenas do frontend que está na porta 5173
+  origin: 'http://localhost:5173'  // Permite requisições da porta 5173
 }));
 
-// Importar o corpo da requisição (necessário para poder acessar `req.body`)
-app.use(express.json());  // Adiciona o middleware para análise do corpo JSON da requisição
+// Middleware para ler o corpo da requisição como JSON
+app.use(express.json());
 
-// Seu código de cadastro de usuário
+// Rota de Cadastro de Usuário
 app.post('/inserir/usuario', (req, res) => {
   const { nome, email, cpf, senha } = req.body;
 
@@ -24,7 +22,6 @@ app.post('/inserir/usuario', (req, res) => {
     return res.status(400).send('Nome, email, CPF e senha são obrigatórios');
   }
 
-  // Verificar se o e-mail já existe
   connection.query('SELECT * FROM usuario WHERE email = ? OR cpf = ?', [email, cpf], (err, results) => {
     if (err) {
       console.error('Erro ao verificar dados existentes:', err);
@@ -35,23 +32,53 @@ app.post('/inserir/usuario', (req, res) => {
       return res.status(400).send('E-mail ou CPF já cadastrados');
     }
 
-    // Inserir usuário caso não haja conflito
-    connection.query(
-      'INSERT INTO usuario (nome, email, cpf, senha) VALUES (?, ?, ?, ?)', 
+    connection.query('INSERT INTO usuario (nome, email, cpf, senha) VALUES (?, ?, ?, ?)', 
       [nome, email, cpf, senha], 
       (err, results) => {
         if (err) {
           console.error('Erro na inserção:', err);
           return res.status(500).send('Erro ao inserir no banco de dados');
         }
-        console.log('Usuário inserido:', results);
         res.status(200).send('Usuário inserido com sucesso!');
       }
     );
   });
 });
 
-// Definir a porta e iniciar o servidor
+// Rota de Login
+app.post('/login', (req, res) => {
+  const { email, senha } = req.body;
+
+  if (!email || !senha) {
+    return res.status(400).send('E-mail e senha são obrigatórios');
+  }
+
+  connection.query('SELECT * FROM usuario WHERE email = ?', [email], (err, results) => {
+    if (err) {
+      console.error('Erro ao verificar usuário:', err);
+      return res.status(500).send('Erro ao verificar usuário');
+    }
+
+    if (results.length === 0) {
+      return res.status(404).send('Usuário não encontrado');
+    }
+
+    const user = results[0];
+    if (user.senha !== senha) {
+      return res.status(401).send('Senha incorreta');
+    }
+
+    // Gerar um token JWT
+    const token = jwt.sign({ userId: user.id }, 'seu_segredo_aqui', { expiresIn: '1h' });
+
+    res.status(200).send({
+      message: 'Login bem-sucedido',
+      token: token // Enviar o token no corpo da resposta
+    });
+  });
+});
+
+// Iniciar o servidor
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);

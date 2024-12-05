@@ -1,11 +1,11 @@
-/* Estilos locais */
-
+/* Container principal */
 .homeContainer {
     font-family: Arial, sans-serif;
     background-color: #000;
     color: #fff;
   }
   
+  /* Navbar */
   .navbar {
     display: flex;
     justify-content: space-between;
@@ -15,66 +15,101 @@
     position: sticky;
     top: 0;
     z-index: 1000;
+    flex-wrap: wrap; /* Permite que os itens da navbar se ajustem em telas pequenas */
   }
   
   .logo {
-    font-size: 24px;
-    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .logoImage {
+    width: 100px; /* Ajuste o tamanho conforme necessário */
+    height: auto;
+  }
+  
+  nav {
+    display: flex;
+    gap: 15px; /* Espaçamento entre os links */
   }
   
   .navLink {
     color: #fff;
     text-decoration: none;
-    margin: 0 10px;
   }
   
+  @media (max-width: 768px) {
+    /* Para dispositivos móveis */
+    .navbar {
+      justify-content: center;
+      padding: 10px;
+    }
+  
+    .logoImage {
+      width: 80px; /* Ajuste o tamanho da logo em telas pequenas */
+    }
+  
+    nav {
+      flex-direction: column; /* Alinha os links verticalmente */
+      gap: 10px; /* Ajuste o espaçamento entre os links */
+    }
+  
+    .buttons {
+        display: flex;
+        flex-direction: column; /* Coloca os botões um embaixo do outro */
+        gap: 10px; /* Espaçamento entre os botões */
+        width: 100%; /* Faz a seção de botões ocupar toda a largura disponível */
+        max-width: 300px; /* Limita a largura máxima dos botões */
+      }
+  
+    .btn {
+      width: 100%; /* Faz os botões ocuparem toda a largura disponível */
+    }
+  }
+  
+  /* Seção de boas-vindas */
   .welcomeSection {
     text-align: center;
     padding: 50px 20px;
     background-image: url('/path-to-background.jpg');
     background-size: cover;
     background-position: center;
-    height: 100vh; /* Ocupa toda a altura da viewport */
-    display: flex; /* Centraliza o conteúdo */
+    height: 100vh;
+    display: flex;
     flex-direction: column;
-    justify-content: center; /* Centraliza verticalmente */
-    align-items: center; /* Centraliza horizontalmente */
-    max-width: 1500px; /* Define uma largura máxima para parecer "normal" */
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Opcional: Dá destaque */
-    border-radius: 10px; /* Opcional: Bordas arredondas */
-    overflow: hidden; /* Corta conteúdo excedente, se houver */
+    justify-content: center;
+    align-items: center;
+    max-width: 1500px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
   }
   
   .welcomeSection h1 {
     font-size: 36px;
-    margin-bottom: 20px;
   }
   
   .buttons {
     display: flex;
-    flex-direction: column; /* Os botões vão ficar empilhados verticalmente */
-    gap: 20px; /* Espaço entre os botões */
-    align-items: center; /* Centraliza os botões horizontalmente */
-    width: 100%;
-    max-width: 400px; /* Limita a largura máxima dos botões */
+    flex-direction: column; /* Coloca os botões um embaixo do outro */
+    gap: 10px; /* Espaçamento entre os botões */
+    width: 100%; /* Faz a seção de botões ocupar toda a largura disponível */
+    max-width: 300px; /* Limita a largura máxima dos botões */
   }
   
   .buttons .btn {
-    width: 100%; /* Faz os botões ocuparem toda a largura disponível */
-    padding: 15px; /* Ajusta o tamanho do botão */
+    width: 100%; /* Faz os botões ocuparem 100% da largura da .buttons */
+    padding: 10px 20px;
     font-size: 18px;
     background-color: #fff;
     color: #000;
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    transition: background-color 0.3s ease;
   }
   
-  .buttons .btn:hover {
-    background-color: #ddd; /* Efeito ao passar o mouse */
-  }
-  
+  /* Motivação */
   .motivationSection {
     padding: 40px 20px;
     text-align: center;
@@ -91,6 +126,7 @@
     border: 2px solid #fff;
   }
   
+  /* Depoimento ou mensagem */
   .testimonySection {
     padding: 20px;
     background-color: #111;
@@ -98,10 +134,10 @@
     font-style: italic;
   }
   
+  /* Rodapé */
   .footer {
     text-align: center;
     padding: 10px;
     background-color: #111;
     font-size: 14px;
   }
-  

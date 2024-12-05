@@ -13,7 +13,6 @@ const Home = () => {
         </div>
         <nav>
           <a href="#financeiro" className={styles.navLink}>Financeiro</a>
-          <a href="#home" className={styles.navLink}>Home</a>
           <a href="#duvidas" className={styles.navLink}>Dúvidas</a>
           <a href="#planos" className={styles.navLink}>Planos</a>
           <a href="#produtos" className={styles.navLink}>Produtos</a>
